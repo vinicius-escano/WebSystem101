@@ -1,10 +1,13 @@
 package com.websystem.websystem.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_endereco")
 public class Endereco {
@@ -22,4 +25,5 @@ public class Endereco {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
 }

@@ -1,11 +1,17 @@
 package com.websystem.websystem.model;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_clientes")
 public class Cliente {
@@ -18,8 +24,8 @@ public class Cliente {
     private String cpfCnpj;
 
     @OneToMany(mappedBy = "cliente")
-    private List<Contatos> contatos;
+    private List<Contatos> listContatos;
 
     @OneToMany(mappedBy = "cliente")
-    private List<Endereco> enderecos;
+    private List<Endereco> listEnderecos;
 }

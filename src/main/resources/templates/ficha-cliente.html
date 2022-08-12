@@ -65,39 +65,41 @@
 
     <div class="container mt-3">
         <div class="boxborder form-row">
-            <div>
-                <label class="form-labels">Código:</label>
-                <input class="form-inputs" style="width: 10%;" th:field="${cadastro.codigo}">
-            </div>
-            <div class="mt-4">
-                <label class="form-labels">Nome</label>
-                <input class="form-inputs" style="display: block; width: 100%;" th:field="${cadastro.nome}">
-            </div>
-            <div class="mt-3">
-                <label class="form-labels">CPF/CNPJ</label>
-                <input class="form-inputs" style="width: 10%" th:field="${cadastro.cpfCnpj}"> 
-            </div>
-            <div class="mt-3" data-th-each="enderecos : ${cadastro.getEnderecos()}">
-                <label class="form-labels">Endereço</label>
-                <input class="form-inputs" th:field="${enderecos.logradouro}">
-                <label class="form-labels">Numero</label>
-                <input class="form-inputs" th:field="${enderecos.numero}">
-                <label class="form-labels">Bairro</label>
-                <input class="form-inputs" th:field="${enderecos.bairro}">
-                <label class="form-labels">Cidade</label>
-                <input class="form-inputs" th:field="${enderecos.cidade}">
-                <label class="form-labels">CEP</label>
-                <input class="form-inputs" th:field="${enderecos.cep}">
-                <label class="form-labels">UF</label>
-                <input class="form-inputs" th:field="${enderecos.uf}">
-            </div>
-            <div data-th-each="contatos : ${cadastro.getContatos()}">
-                <label class="form-labels">Telefone</label>
-                <input class="form-inputs" th:field="${contatos.numeroTelefone}">
-                <label class="form-labels">Email</label>
-                <input class="form-inputs" th:field="${contatos.email}">
-            </div>
-            <button class="btn btn-primary">Salvar</button>
+            <form th:object="${cliente}">
+                <div>
+                    <label class="form-labels">Código:</label>
+                    <input class="form-inputs" style="width: 10%;" th:field="*{codigo}">
+                </div>
+                <div class="mt-4">
+                    <label class="form-labels">Nome</label>
+                    <input class="form-inputs" style="display: block; width: 100%;" th:field="*{nome}">
+                </div>
+                <div class="mt-3">
+                    <label class="form-labels">CPF/CNPJ</label>
+                    <input class="form-inputs" style="width: 10%" th:field="*{cpfCnpj}">
+                </div>
+                <div class="mt-3" th-each="enderecos : *{enderecos}">
+                    <label class="form-labels">Endereço</label>
+                    <input class="form-inputs" th:field="*{logradouro}">
+                    <label class="form-labels">Numero</label>
+                    <input class="form-inputs" th:field="*{numero}">
+                    <label class="form-labels">Bairro</label>
+                    <input class="form-inputs" th:field="*{bairro}">
+                    <label class="form-labels">Cidade</label>
+                    <input class="form-inputs" th:field="*{cidade}">
+                    <label class="form-labels">CEP</label>
+                    <input class="form-inputs" th:field="*{cep}">
+                    <label class="form-labels">UF</label>
+                    <input class="form-inputs" th:field="*{uf}">
+                </div>
+                <div th-each="contatos : ${cliente.getContatos()}">
+                    <label class="form-labels">Telefone</label>
+                    <input class="form-inputs" th:field="${contatos.numeroTelefone}">
+                    <label class="form-labels">Email</label>
+                    <input class="form-inputs" th:field="${contatos.email}">
+                </div>
+                <button class="btn btn-primary">Salvar</button>
+            </form>
         </div>
     </div>
 </body>

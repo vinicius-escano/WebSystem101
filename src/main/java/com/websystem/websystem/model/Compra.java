@@ -1,11 +1,14 @@
 package com.websystem.websystem.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_compras")
 public class Compra {
@@ -18,4 +21,5 @@ public class Compra {
 
     @Transient
     private List<Produto> produtoList;
+
 }

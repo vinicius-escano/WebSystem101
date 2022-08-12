@@ -1,12 +1,18 @@
 package com.websystem.websystem.model;
 
 import com.websystem.websystem.enums.ModoPagamento;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_vendas")
 public class Venda {
@@ -23,4 +29,6 @@ public class Venda {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
+
 }

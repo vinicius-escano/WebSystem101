@@ -30,6 +30,8 @@ public class ClienteController {
     @RequestMapping(value = "/acessarCliente", params = {"id"})
     public ModelAndView acessarCadastroCliente(@RequestParam("id") String id){
         Optional<Cliente> opCliente = clienteService.findById(Integer.valueOf(id));
-        return new ModelAndView("ficha-cliente").addObject("cadastro", opCliente.get());
+        ModelAndView modelAndView = new ModelAndView("ficha-cliente");
+        modelAndView.addObject("cliente", opCliente.get());
+        return modelAndView;
     }
 }
