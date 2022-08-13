@@ -74,19 +74,14 @@
                     <th>Quantidade Disponível</th>
                     <th>Acessar Cadastro</th>
                 </tr>
-                <tr>
-                    <td>0001</td>
-                    <td>Parafuso</td>
-                    <td>1.50</td>
-                    <td>150</td>
-                    <td><a>Acessar</a></td>
-                </tr>
-                <tr>
-                    <td>0002</td>
-                    <td>Porca</td>
-                    <td>1.00</td>
-                    <td>150</td>
-                    <td><a>Acessar</a></td>
+                <tr th:each="produto : ${produtos}">
+                    <td th:text="${produto.codigo}"></td>
+                    <td th:text="${produto.descricao}"></td>
+                    <td th:text="${produto.valor}"></td>
+                    <td th:text="${produto.quantidade}"></td>
+                    <td><a type="button" class="btn btn-primary"
+                            th:href="@{'/acessarproduto?' (id = ${produto.codigo})}">
+                            Acessar</a></td>
                 </tr>
             </table>
         </div>

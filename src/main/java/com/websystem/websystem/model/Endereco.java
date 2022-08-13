@@ -26,4 +26,13 @@ public class Endereco {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    public Endereco(int codigo, String logradouro, String bairro, String uf, Integer numero, String cidade, String cep) {
+        this.codigo = codigo;
+        this.logradouro = logradouro;
+        this.bairro = bairro;
+        this.uf = uf;
+        this.numero = numero;
+        this.cidade = cidade;
+        this.cep = cep;
+    }
 }

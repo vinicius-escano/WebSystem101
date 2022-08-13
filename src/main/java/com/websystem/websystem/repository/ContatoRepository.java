@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface ContatoRepository extends JpaRepository<Contatos, Integer> {
 
-    @Query("SELECT new Contatos(codigo,numeroTelefone,email,cliente) FROM Contatos WHERE cliente_id = ?1")
+    @Query("SELECT new Contatos(codigo,numeroTelefone,email) FROM Contatos WHERE cliente_id = ?1")
     List<Contatos> findAllByClientes(Integer id);
 }

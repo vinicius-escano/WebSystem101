@@ -22,4 +22,9 @@ public class Contatos {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    public Contatos(int codigo, String numeroTelefone, String email) {
+        this.codigo = codigo;
+        this.numeroTelefone = numeroTelefone;
+        this.email = email;
+    }
 }

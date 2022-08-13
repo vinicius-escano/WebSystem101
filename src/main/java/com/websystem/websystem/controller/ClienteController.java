@@ -2,6 +2,7 @@ package com.websystem.websystem.controller;
 
 import com.websystem.websystem.model.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

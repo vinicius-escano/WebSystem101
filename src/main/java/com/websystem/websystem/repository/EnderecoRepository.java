@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional
 public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
 
-    @Query("SELECT new Endereco(codigo,logradouro,bairro,uf,numero,cidade,cep,cliente) FROM Endereco WHERE cliente_id = ?1")
+    @Query("SELECT new Endereco(codigo,logradouro,bairro,uf,numero,cidade,cep) FROM Endereco WHERE cliente_id = ?1")
     List<Endereco> findAllByClientes(Integer id);
 
 }

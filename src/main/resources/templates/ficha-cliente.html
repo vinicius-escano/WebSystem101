@@ -23,7 +23,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="/">Link</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -78,25 +78,25 @@
                     <label class="form-labels">CPF/CNPJ</label>
                     <input class="form-inputs" style="width: 10%" th:field="*{cpfCnpj}">
                 </div>
-                <div class="mt-3" th-each="enderecos : *{enderecos}">
+                <div class="mt-3" th:each="endereco, stat : *{listEnderecos}">
                     <label class="form-labels">Endereço</label>
-                    <input class="form-inputs" th:field="*{logradouro}">
+                    <input class="form-inputs" th:field="*{listEnderecos[__${stat.index}__].logradouro}">
                     <label class="form-labels">Numero</label>
-                    <input class="form-inputs" th:field="*{numero}">
+                    <input class="form-inputs" th:field="*{listEnderecos[__${stat.index}__].numero}">
                     <label class="form-labels">Bairro</label>
-                    <input class="form-inputs" th:field="*{bairro}">
+                    <input class="form-inputs" th:field="*{listEnderecos[__${stat.index}__].bairro}">
                     <label class="form-labels">Cidade</label>
-                    <input class="form-inputs" th:field="*{cidade}">
+                    <input class="form-inputs" th:field="*{listEnderecos[__${stat.index}__].cidade}">
                     <label class="form-labels">CEP</label>
-                    <input class="form-inputs" th:field="*{cep}">
+                    <input class="form-inputs" th:field="*{listEnderecos[__${stat.index}__].cep}">
                     <label class="form-labels">UF</label>
-                    <input class="form-inputs" th:field="*{uf}">
+                    <input class="form-inputs" th:field="*{listEnderecos[__${stat.index}__].uf}">
                 </div>
-                <div th-each="contatos : ${cliente.getContatos()}">
+                <div th:each="contato, stat : *{listContatos}">
                     <label class="form-labels">Telefone</label>
-                    <input class="form-inputs" th:field="${contatos.numeroTelefone}">
+                    <input class="form-inputs" th:field="*{listContatos[__${stat.index}__].numeroTelefone}">
                     <label class="form-labels">Email</label>
-                    <input class="form-inputs" th:field="${contatos.email}">
+                    <input class="form-inputs" th:field="*{listContatos[__${stat.index}__].email}">
                 </div>
                 <button class="btn btn-primary">Salvar</button>
             </form>

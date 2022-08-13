@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Produto</title>
+    <title>Pedido de Compra</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css">
@@ -10,6 +10,11 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Aldrich'>
 </head>
+<script>
+    function addItem(codigo, quantidade) {
+            location.href = '/adicionarproduto?codigo=' + codigo + "&quantidade=" + quantidade;
+        }
+</script>
 
 <body>
     <nav class="navbar navbar-expand-lg bg-success navbar-light ">
@@ -65,31 +70,38 @@
 
     <div class="container mt-3">
         <div class="boxborder form-row">
-            <form th:object="${produto}" th:action="@{/novoproduto}" method="POST">
+            <form th:object="${pedidoCompra}" th:action="@{/novoproduto}" method="POST">
                 <div>
-                    <label class="form-labels">Código:</label>
-                    <input class="form-inputs" style="width: 10%;" th:field="*{codigo}">
-                </div>
-                <div class="mt-4">
-                    <label class="form-labels">Descrição</label>
-                    <input class="form-inputs" style="display: block; width: 100%;" th:field="*{descricao}">
-                </div>
-                <div class="mt-3">
-                    <label class="form-labels">Valor R$</label>
-                    <input class="form-inputs" style="width: 10%" th:field="*{valor}">
-                    <label class="form-labels">Imposto (%):</label>
-                    <input class="form-inputs" style="width: 5%;" th:field="*{imposto}">
-                </div>
-                <div class="mt-3">
-                    <label class="form-labels ml-5">Quantidade Disponivel:</label>
-                    <input class="form-inputs" style="width: 7%;" th:field="*{quantidade}">
-                    <label class="form-labels">Grupo:</label>
+                    <label>Destino</label>
                     <select name="produtoGrupo">
-                        <option th:each="grupoOpt : ${T(com.websystem.websystem.enums.ProdutoGrupo).values()}"
-                            th:value="*{grupo}" th:text="${grupoOpt}" class="form-inputs"></option>
+                        <option th:each="grupoOpt : ${T(com.websystem.websystem.enums.CompraDestino).values()}"
+                            th:value="*{destino}" th:text="${grupoOpt}" class="form-inputs"></option>
                     </select>
                 </div>
-                <button class="btn btn-primary">Salvar</button>
+                <div>
+                    <p class="text-center" style="font-size: larger;"><b>Relação de Itens</b></p>
+                    <label>Código do Item: </label>
+                    <input class="form-inputs" style="width: 10%;" id="itemCodigo" name="itemCodigo">
+                    <label style="margin-left: 15px;">Quantidade à Comprar</label>
+                    <input class="form-inputs" style="width: 5%;" id="quantidade" name="quantidade">
+                    <button class="btn btn-primary mt-2" type="submit" name="addItem"
+                                        id="addItem">Adiciona Item</button>
+                    <table class="table">
+                        <tr>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th>Quantidade</th>
+                            <th>Valor Estimado</th>
+                        </tr>
+                        <tr th:each="produto, stat : *{listProdutos}">
+                            <td th:text="*{listProdutos[__${stat.index}__].codigo}"></td>
+                            <td th:text="*{listProdutos[__${stat.index}__].descricao}"></td>
+                            <td th:text="*{listProdutos[__${stat.index}__].valor}"></td>
+                            <td th:text="*{listProdutos[__${stat.index}__].quantidade}"></td>
+                        </tr>
+                    </table>
+                </div>
+                <button class="btn btn-primary" type="submit">Salvar</button>
             </form>
         </div>
     </div>
