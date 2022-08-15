@@ -65,15 +65,21 @@
 </nav>
 
 <div class="container mt-3" style="margin-left: 0px; padding-right: 50%;">
-    <div class="menuboxborder">
-        <div class="menuitem">
-            <a href="/gerarpedido" style="text-decoration: none;">Cds</a>
-            <br>
-            <a href="/visualizarpedidos" style="text-decoration: none;">Edit</a>
-            <br>
-            <a href="/entradaproduto" style="text-decoration: none;">Edit</a>
-            <br>
-        </div>
+    <div class="boxborder form-row">
+        <table class="table">
+            <tr>
+                <th>Código</th>
+                <th>Destino</th>
+                <th>Observação</th>
+                <th>Acessar</th>
+            </tr>
+            <tr th:each="pedido : ${listPedidos}">
+                <td th:text="${pedido.codigo}"></td>
+                <td th:text="${pedido.destino}"></td>
+                <td th:text="${pedido.observacao}"></td>
+                <td><a type="button" class="btn btn-primary" th:href="@{'/acessarpedido?'(id = ${pedido.codigo})}">Acessar</a></td>
+            </tr>
+        </table>
     </div>
 </div>
 </body>

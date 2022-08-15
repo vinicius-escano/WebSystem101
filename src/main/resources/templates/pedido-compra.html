@@ -3,6 +3,7 @@
 
 <head>
     <title>Pedido de Compra</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css">
@@ -70,36 +71,46 @@
 
     <div class="container mt-3">
         <div class="boxborder form-row">
-            <form th:object="${pedidoCompra}" th:action="@{/novoproduto}" method="POST">
+            <form th:object="${pedidoCompra}" action="/novopedido" th:action="@{/novopedido}" method="POST">
+                <div style="display: none;">
+                    <input th:field="*{codigo}" th:value="*{codigo}" name="codigo" id="codigo">
+                </div>
                 <div>
-                    <label>Destino</label>
-                    <select name="produtoGrupo">
+                    <label class="form-labels">Destino</label>
+                    <select name="destino" id="destino">
+                        <option value = "0">Selecione</option>
                         <option th:each="grupoOpt : ${T(com.websystem.websystem.enums.CompraDestino).values()}"
-                            th:value="*{destino}" th:text="${grupoOpt}" class="form-inputs"></option>
+                            th:value="${grupoOpt}" th:field="*{destino}" th:text="${grupoOpt}" class="form-inputs"></option>
                     </select>
                 </div>
                 <div>
                     <p class="text-center" style="font-size: larger;"><b>Relação de Itens</b></p>
-                    <label>Código do Item: </label>
+                    <label class="form-labels">Código do Item: </label>
                     <input class="form-inputs" style="width: 10%;" id="itemCodigo" name="itemCodigo">
-                    <label style="margin-left: 15px;">Quantidade à Comprar</label>
+                    <label style="margin-left: 15px;" class="form-labels">Quantidade à Comprar</label>
                     <input class="form-inputs" style="width: 5%;" id="quantidade" name="quantidade">
                     <button class="btn btn-primary mt-2" type="submit" name="addItem"
                                         id="addItem">Adiciona Item</button>
                     <table class="table">
                         <tr>
+                            <th>Item Nº</th>
                             <th>Código</th>
                             <th>Descrição</th>
                             <th>Quantidade</th>
                             <th>Valor Estimado</th>
+                            <th></th>
                         </tr>
                         <tr th:each="produto, stat : *{listProdutos}">
+                            <td th:text="(${stat.index} + 1)"></td>
                             <td th:text="*{listProdutos[__${stat.index}__].codigo}"></td>
                             <td th:text="*{listProdutos[__${stat.index}__].descricao}"></td>
-                            <td th:text="*{listProdutos[__${stat.index}__].valor}"></td>
                             <td th:text="*{listProdutos[__${stat.index}__].quantidade}"></td>
+                            <td th:text="*{listProdutos[__${stat.index}__].valor}"></td>
+                            <td><button class="btn btn-danger" id="removeItemNumero" name="removeItemNumero" type="submit" th:value="${stat.index}">Remover</button></td>
                         </tr>
                     </table>
+                    <label class="form-labels">Observação</label>
+                    <textarea th:field="*{observacao}" maxlength="200" placeholder="Insira observação se necessário" class="form-inputs"></textarea>
                 </div>
                 <button class="btn btn-primary" type="submit">Salvar</button>
             </form>

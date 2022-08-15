@@ -16,6 +16,7 @@ public class Compra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
+    private Integer pedidoCodigo;
     private Double valorCompra;
     private Integer codigoNota;
 
