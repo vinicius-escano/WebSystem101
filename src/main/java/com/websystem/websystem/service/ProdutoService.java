@@ -13,8 +13,12 @@ public class ProdutoService {
     @Autowired
     ProdutoRepository produtoRepository;
 
-    public List<Produto> findAllByPedidoCompraCodigo(int codigo){
+    @Autowired
+    private CustomQueryService queryService;
 
+    public List<Produto> findAllByPedidoCompraCodigo(int codigoPedido){
+        List<Integer> codigosProdutos = queryService.buscaItens(codigoPedido);
+        return produtoRepository.listByPedidoCompra(codigosProdutos);
     }
 
 }

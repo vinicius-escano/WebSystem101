@@ -6,16 +6,12 @@ import com.websystem.websystem.repository.PedidoCompraRepository;
 import com.websystem.websystem.repository.ProdutoRepository;
 import com.websystem.websystem.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -90,8 +86,8 @@ public class CompraController {
     public ModelAndView entradaProduto(@RequestParam("id") Integer id) {
         Optional<PedidoCompra> opPedidoCompra = pedidoCompraRepository.findById(id);
         if(opPedidoCompra.isPresent()){
-            List<Produto> listProdutos = produtoRepository.fin
-            return new ModelAndView("pedido-compra").addObject("pedido-compra", opPedidoCompra.get());
+            opPedidoCompra.get().setListProdutos(produtoService.findAllByPedidoCompraCodigo(id));
+            return new ModelAndView("pedido-compra").addObject("pedidoCompra", opPedidoCompra.get());
         }
         return null;
     }

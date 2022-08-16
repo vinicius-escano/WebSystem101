@@ -20,15 +20,19 @@ public class Venda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
-    private Double valorTotal;
+    private Double valorTotal = 0.0;
     private ModoPagamento modoPagamento;
 
     @Transient
-    private List<Produto> produtos;
+    private List<Produto> listProdutos;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+
+    public Venda(List<Produto> list){
+        this.listProdutos = list;
+    }
 
 }

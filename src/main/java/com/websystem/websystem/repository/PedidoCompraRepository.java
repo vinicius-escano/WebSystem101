@@ -2,10 +2,12 @@ package com.websystem.websystem.repository;
 
 import com.websystem.websystem.model.PedidoCompra;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface PedidoCompraRepository extends JpaRepository<PedidoCompra, Integer> {

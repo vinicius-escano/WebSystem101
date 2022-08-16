@@ -12,86 +12,102 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-success navbar-light ">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" style="font-size: 30px;"><b>Brand</b></a>
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+<nav class="navbar navbar-expand-lg bg-success navbar-light ">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/" style="font-size: 30px;"><b>Brand</b></a>
+        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
                 data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-mdb-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#">Action</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Another action</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="navbar-nav d-flex flex-row me-1">
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i></a>
-                    </li>
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="#"><i class="fab fa-twitter"></i></a>
-                    </li>
-                </ul>
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
+                       data-mdb-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item" href="#">Action</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Another action</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider"/>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="navbar-nav d-flex flex-row me-1">
+                <li class="nav-item me-3 me-lg-0">
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i></a>
+                </li>
+                <li class="nav-item me-3 me-lg-0">
+                    <a class="nav-link" href="#"><i class="fab fa-twitter"></i></a>
+                </li>
+            </ul>
 
-                <form class="w-auto">
-                    <input type="search" class="form-control" placeholder="Type query" aria-label="Search">
-                </form>
+            <form class="w-auto">
+                <input type="search" class="form-control" placeholder="Type query" aria-label="Search">
+            </form>
 
-            </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <div class="container mt-3">
-        <div class="boxborder">
+<div class="container mt-3">
+    <div class="boxborder">
+        <form th:object="${venda}" th:action="@{/efetivar}" method="post">
             <div>
                 <label class="form-labels">Código: </label>
-                <input class="form-inputfield">
-                <button class="btn-primary btn">Buscar</button>
+                <input class="form-inputfields" id="codigoItem" name="codigoItem">
+                <label class="form-labels">Quantidade:</label>
+                <input class="form-inputfields" id="quantidadeItem" name="quantidadeItem">
+                <button class="btn-primary btn" type="submit" id="buscaItem" name="buscaItem">Buscar</button>
             </div>
             <div>
                 <h1 class="text-center">Carrinho</h1>
                 <div>
                     <table class="table text-center">
                         <tr>
-                          <th>Codigo</th>
-                          <th>Descrição</th>
-                          <th>Valor</th>
-                          <th>Estoque Disponivel</th>
+                            <th>Nº</th>
+                            <th>Codigo</th>
+                            <th>Descrição</th>
+                            <th>Qtd Sol.</th>
+                            <th>Valor Unit.</th>
+                            <th>Valor Total.</th>
+                            <th>Estoque Disponível</th>
+                            <th></th>
                         </tr>
-                        <tr>
-                          <td>0001</td>
-                          <td>Default</td>
-                          <td>50,00</td>
-                          <td>13</td>
+                        <tr th:each="produto, stat : *{listProdutos}">
+                            <td th:text="(${stat.index} + 1)"></td>
+                            <td th:text="*{listProdutos[__${stat.index}__].codigo}"></td>
+                            <td th:text="*{listProdutos[__${stat.index}__].descricao}"></td>
+                            <td th:text="*{listProdutos[__${stat.index}__].quantidadeVenda}"></td>
+                            <td th:text="*{#numbers.formatCurrency(listProdutos[__${stat.index}__].valor)}"></td>
+                            <td th:text="*{#numbers.formatCurrency(listProdutos[__${stat.index}__].valorTotalEmVenda)}"></td>
+                            <td th:text="*{listProdutos[__${stat.index}__].quantidade}"></td>
+                            <td><button class="btn btn-danger" id="removeItemNumero" name="removeItemNumero" type="submit" th:value="${stat.index}">Remover</button></td>
                         </tr>
-                      </table>
+                    </table>
                 </div>
-                <button class="btn btn-primary">Fechar Pedido</button>
+                <div>
+                    <label class="form-labels"> Valor Total: <span th:text="*{#numbers.formatCurrency(valorTotal)}"> </span></label>
+                </div>
+                <button class="btn btn-primary text-center">Fechar Pedido</button>
             </div>
-        </div>
+        </form>
     </div>
+
+</div>
 </body>
 
 

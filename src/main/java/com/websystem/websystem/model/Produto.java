@@ -25,4 +25,9 @@ public class Produto {
     private Integer imposto;
     private ProdutoGrupo grupo;
 
+    @Transient
+    private Integer quantidadeVenda;
+    @Transient
+    private Double valorTotalEmVenda;
+
 }
