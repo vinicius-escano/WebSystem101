@@ -1,13 +1,13 @@
 package com.websystem.websystem.controller;
 
+import com.websystem.websystem.enums.ModoPagamento;
+import com.websystem.websystem.enums.VendaStatus;
 import com.websystem.websystem.model.Produto;
 import com.websystem.websystem.model.Venda;
 import com.websystem.websystem.repository.ProdutoRepository;
+import com.websystem.websystem.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +19,9 @@ public class VendaController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private VendaService vendaService;
 
     @GetMapping("/vender")
     public ModelAndView vender(HttpServletRequest httpServletRequest) {
@@ -46,6 +49,22 @@ public class VendaController {
         venda.setValorTotal(venda.getValorTotal() - venda.getListProdutos().get(codigoItem).getValorTotalEmVenda());
         venda.getListProdutos().remove(venda.getListProdutos().get(codigoItem));
         return new ModelAndView("vender").addObject("venda", venda);
+    }
+
+    @PostMapping("/efetivar")
+    public ModelAndView adicionarItem(HttpServletRequest httpServletRequest){
+        Venda venda = (Venda) httpServletRequest.getSession().getAttribute("venda");
+        Venda savedVenda = vendaService.salvarVenda(venda);
+        vendaService.salvarItensReferenciaVenda(savedVenda.getCodigo(), venda.getListProdutos());
+        return new ModelAndView("modo-pagamento").addObject("venda", savedVenda);
+    }
+
+    @PostMapping("/confirmavenda")
+    public ModelAndView confirmaVenda(HttpServletRequest httpServletRequest){
+        Venda venda = (Venda) httpServletRequest.getSession().getAttribute("venda");
+        venda.setVendaStatus(VendaStatus.FECHADO);
+        vendaService.alteraStatusVenda(venda);
+        return new ModelAndView("home");
     }
 
 }

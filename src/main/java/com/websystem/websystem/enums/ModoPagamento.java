@@ -2,6 +2,7 @@ package com.websystem.websystem.enums;
 
 public enum ModoPagamento {
 
+
     DINHEIRO,
     DEBITO,
     CREDITO_1X,

@@ -66,15 +66,15 @@
 <div class="container mt-3">
     <div class="boxborder">
         <form th:object="${venda}" th:action="@{/efetivar}" method="post">
-            <div>
+            <div class="text-center">
                 <label class="form-labels">Código: </label>
-                <input class="form-inputfields" id="codigoItem" name="codigoItem">
+                <input class="form-inputs" id="codigoItem" name="codigoItem" style="width: 70px">
                 <label class="form-labels">Quantidade:</label>
-                <input class="form-inputfields" id="quantidadeItem" name="quantidadeItem">
+                <input class="form-inputs" id="quantidadeItem" name="quantidadeItem" style="width: 50px">
                 <button class="btn-primary btn" type="submit" id="buscaItem" name="buscaItem">Buscar</button>
             </div>
             <div>
-                <h1 class="text-center">Carrinho</h1>
+                <h1 class="text-center mt-5">Carrinho</h1>
                 <div>
                     <table class="table text-center">
                         <tr>
@@ -87,7 +87,7 @@
                             <th>Estoque Disponível</th>
                             <th></th>
                         </tr>
-                        <tr th:each="produto, stat : *{listProdutos}">
+                        <tr th:each="produto, stat : *{listProdutos}" id="listProdutos">
                             <td th:text="(${stat.index} + 1)"></td>
                             <td th:text="*{listProdutos[__${stat.index}__].codigo}"></td>
                             <td th:text="*{listProdutos[__${stat.index}__].descricao}"></td>
@@ -95,14 +95,21 @@
                             <td th:text="*{#numbers.formatCurrency(listProdutos[__${stat.index}__].valor)}"></td>
                             <td th:text="*{#numbers.formatCurrency(listProdutos[__${stat.index}__].valorTotalEmVenda)}"></td>
                             <td th:text="*{listProdutos[__${stat.index}__].quantidade}"></td>
-                            <td><button class="btn btn-danger" id="removeItemNumero" name="removeItemNumero" type="submit" th:value="${stat.index}">Remover</button></td>
+                            <td>
+                                <button class="btn btn-danger" id="removeItemNumero" name="removeItemNumero"
+                                        type="submit" th:value="${stat.index}">Remover
+                                </button>
+                            </td>
                         </tr>
                     </table>
                 </div>
                 <div>
-                    <label class="form-labels"> Valor Total: <span th:text="*{#numbers.formatCurrency(valorTotal)}"> </span></label>
+                    <label class="form-labels"> Sub-Total: <span
+                            th:text="*{#numbers.formatCurrency(valorTotal)}"> </span></label>
                 </div>
-                <button class="btn btn-primary text-center">Fechar Pedido</button>
+                <div class="text-center">
+                    <button class="btn btn-primary text-center">Fechar Pedido</button>
+                </div>
             </div>
         </form>
     </div>

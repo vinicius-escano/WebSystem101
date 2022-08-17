@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Devolução</title>
@@ -12,93 +12,106 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-success navbar-light ">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/" style="font-size: 30px;"><b>Brand</b></a>
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+<nav class="navbar navbar-expand-lg bg-success navbar-light ">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/" style="font-size: 30px;"><b>Brand</b></a>
+        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
                 data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
-                            data-mdb-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#">Action</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Another action</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="navbar-nav d-flex flex-row me-1">
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i></a>
-                    </li>
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="#"><i class="fab fa-twitter"></i></a>
-                    </li>
-                </ul>
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
+                       data-mdb-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item" href="#">Action</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Another action</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider"/>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="navbar-nav d-flex flex-row me-1">
+                <li class="nav-item me-3 me-lg-0">
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i></a>
+                </li>
+                <li class="nav-item me-3 me-lg-0">
+                    <a class="nav-link" href="#"><i class="fab fa-twitter"></i></a>
+                </li>
+            </ul>
 
-                <form class="w-auto">
-                    <input type="search" class="form-control" placeholder="Type query" aria-label="Search">
-                </form>
+            <form class="w-auto">
+                <input type="search" class="form-control" placeholder="Type query" aria-label="Search">
+            </form>
 
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-3">
-        <div class="boxborder">
-            <div>
-                <label class="form-labels">Código da Venda: </label>
-                <input class="form-inputfield">
-                <button class="btn-primary btn">Buscar</button>
-            </div>
-            <div>
-                <h1 class="text-center">Item</h1>
-                <div>
-                    <table class="table text-center">
-                        <tr>
-                          <th>Codigo</th>
-                          <th>Descrição</th>
-                          <th>Valor</th>
-                          <th>Estoque Disponivel</th>
-                        </tr>
-                        <tr>
-                          <td>0001</td>
-                          <td>Default</td>
-                          <td>50,00</td>
-                          <td>13</td>
-                        </tr>
-                      </table>
-                </div>
-            </div>
-            <div>
-                <label class="form-label">Quantidade a devolver</label>
-                <input>
-                <label class="form-label">NF Venda</label>
-                <input>
-                <label class="form-label">Cliente</label>
-                <input>
-            </div>
         </div>
     </div>
+</nav>
+
+<div class="container mt-3">
+    <div class="boxborder">
+        <form th:object="${devolucao}" th:action="@{/cadastrardevolucao}" method="post">
+            <div>
+                <label class="form-labels">Código da Venda: </label>
+                <input class="form-inputfield" id="codigoVenda" name="codigoVenda">
+                <button class="btn-primary btn" type="submit" name="buscaVenda" id="buscaVenda">Buscar</button>
+            </div>
+            <div th:if="*{vendaOrigemCodigo != 0}">
+                <div>
+                    <h1 class="text-center">Dados Venda</h1>
+                    <p>Cliente: <span> </span></p>
+                    <p>CPF/CNPJ: <span> </span></p>
+                    <p>Itens Comprados</p>
+                    <div>
+                        <table class="table text-center">
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Descrição</th>
+                                <th>Quantidade</th>
+                                <th>Valor Total</th>
+                                <th>Valor Unit</th>
+                                <th>Qtde Devolver</th>
+                                <th></th>
+                            </tr>
+                            <tr th:each="produto, stat : *{listProdutos}" id="listProdutos">
+                                <td>0001</td>
+                                <td th:text="*{listProdutos[__${stat.index}__].descricao}"></td>
+                                <td th:text="*{listProdutos[__${stat.index}__].quantidadeVenda}"></td>
+                                <td>13</td>
+                                <td>13</td>
+                                <td>13</td>
+                                <td>13</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <label class="form-label">Quantidade a devolver</label>
+                    <input>
+                    <label class="form-label">NF Venda</label>
+                    <input>
+                    <label class="form-label">Cliente</label>
+                    <input>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 
 
