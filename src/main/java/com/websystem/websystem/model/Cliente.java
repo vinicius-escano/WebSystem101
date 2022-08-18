@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,6 +23,10 @@ public class Cliente {
 
     private String nome;
     private String cpfCnpj;
+    private LocalDateTime cadastrado = LocalDateTime.now();
+    private String cadastradoPor;
+    private LocalDateTime alterado;
+    private String alteradoPor;
 
     @OneToMany(mappedBy = "cliente")
     private List<Contatos> listContatos;

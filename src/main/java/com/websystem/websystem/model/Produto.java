@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,10 +25,16 @@ public class Produto {
     private Integer quantidade;
     private Integer imposto;
     private ProdutoGrupo grupo;
+    private LocalDateTime cadastrado = LocalDateTime.now();
+    private String cadastradoPor;
+    private LocalDateTime alterado;
+    private String alteradoPor;
 
     @Transient
     private Integer quantidadeVenda;
     @Transient
     private Double valorTotalEmVenda;
+    @Transient
+    private Integer quantidadeDevolver;
 
 }

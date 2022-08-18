@@ -11,6 +11,15 @@
     <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Aldrich'>
 </head>
 
+<script>
+    function buscarVenda(codigoVenda) {
+            window.location.href = '/buscavenda?codigoVenda=' + codigoVenda;
+    }
+    function adicionaItem(itemCodigo, quantidade) {
+            window.location.href = window.document.location.origin + '/additemdevolucao?itemCodigo=' + itemCodigo + '&quantidade=' + quantidade;
+    }
+</script>
+
 <body>
 <nav class="navbar navbar-expand-lg bg-success navbar-light ">
     <div class="container-fluid">
@@ -68,8 +77,11 @@
         <form th:object="${devolucao}" th:action="@{/cadastrardevolucao}" method="post">
             <div>
                 <label class="form-labels">Código da Venda: </label>
-                <input class="form-inputfield" id="codigoVenda" name="codigoVenda">
-                <button class="btn-primary btn" type="submit" name="buscaVenda" id="buscaVenda">Buscar</button>
+                <input class="form-inputs" id="codigoVenda" name="codigoVenda">
+                <button class="btn-primary btn" type="button"
+                        onclick="buscarVenda(document.getElementById('codigoVenda').value)" name="buscaVenda"
+                        id="buscaVenda">Buscar
+                </button>
             </div>
             <div th:if="*{vendaOrigemCodigo != 0}">
                 <div>
@@ -80,33 +92,51 @@
                     <div>
                         <table class="table text-center">
                             <tr>
-                                <th>Codigo</th>
+                                <th>Nº</th>
+                                <th>Item Cód.</th>
                                 <th>Descrição</th>
                                 <th>Quantidade</th>
                                 <th>Valor Total</th>
                                 <th>Valor Unit</th>
                                 <th>Qtde Devolver</th>
-                                <th></th>
+                                <th>Adicionar a Devolucao</th>
                             </tr>
                             <tr th:each="produto, stat : *{listProdutos}" id="listProdutos">
-                                <td>0001</td>
+                                <td th:text="(${stat.index} + 1)" th:value="${stat.index}" id="numList"></td>
+                                <td th:text="*{listProdutos[__${stat.index}__].codigo}" id="itemCodigo"
+                                    name="itemCodigo" th:value="*{listProdutos[__${stat.index}__].codigo}" class="itemCodigo"></td>
                                 <td th:text="*{listProdutos[__${stat.index}__].descricao}"></td>
                                 <td th:text="*{listProdutos[__${stat.index}__].quantidadeVenda}"></td>
-                                <td>13</td>
-                                <td>13</td>
-                                <td>13</td>
-                                <td>13</td>
+                                <td th:text="*{#numbers.formatCurrency(listProdutos[__${stat.index}__].valorTotalEmVenda)}"></td>
+                                <td th:text="*{#numbers.formatCurrency(listProdutos[__${stat.index}__].valor)}"></td>
+                                <td><input th:field="*{listProdutos[__${stat.index}__].quantidadeDevolver}"
+                                           id="quantidadeDevolver" name="quantidadeDevolver" class="form-inputs quantidadeDevolver"
+                                           style="width: 70px"></td>
+                                <td>
+                                    <button type="button" onclick="adicionaItem(document.getElementsByClassName('itemCodigo')[document.getElementById('numList').value].value, document.getElementsByClassName('quantidadeDevolver')[document.getElementById('numList').value].value);" class="btn btn-primary" id="addItemDev" name="addItemDev">+
+                                    </button>
+                                </td>
                             </tr>
                         </table>
                     </div>
-                </div>
-                <div>
-                    <label class="form-label">Quantidade a devolver</label>
-                    <input>
-                    <label class="form-label">NF Venda</label>
-                    <input>
-                    <label class="form-label">Cliente</label>
-                    <input>
+                    <p>Devolvendo</p>
+                    <div>
+                        <table class="table text-center">
+                            <tr>
+                                <th>Nº</th>
+                                <th>Item Cód.</th>
+                                <th>Descrição</th>
+                                <th>Qtde Devolver</th>
+                            </tr>
+                            <tr th:each="produtoDev, stat : *{produtosDevolver}" id="produtosDevolver">
+                                <td th:text="(${stat.index} + 1)"></td>
+                                <td th:text="*{produtosDevolver[__${stat.index}__].codigo}" id="itemCodigoDev"
+                                    name="itemCodigo"></td>
+                                <td th:text="*{produtosDevolver[__${stat.index}__].descricao}"></td>
+                                <td th:field="*{produtosDevolver[__${stat.index}__].quantidadeDevolver}"></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </form>

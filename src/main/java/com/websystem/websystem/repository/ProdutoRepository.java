@@ -12,6 +12,6 @@ import java.util.List;
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
     @Query("SELECT p FROM Produto p WHERE CODIGO IN :codigos")
-    List<Produto> listByPedidoCompra(@Param("codigos") List<Integer> codigos);
+    List<Produto> listByReference(@Param("codigos") List<Integer> codigos);
 
 }

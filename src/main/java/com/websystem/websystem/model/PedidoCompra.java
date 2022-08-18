@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,6 +23,10 @@ public class PedidoCompra {
     private int codigo;
     private CompraDestino destino;
     private String observacao;
+    private LocalDateTime cadastrado = LocalDateTime.now();
+    private String cadastradoPor;
+    private LocalDateTime alterado;
+    private String alteradoPor;
 
     @Transient
     private List<Produto> listProdutos;

@@ -3,6 +3,7 @@ package com.websystem.websystem.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,6 +18,10 @@ public class Contatos {
     private int codigo;
     private String numeroTelefone;
     private String email;
+    private LocalDateTime cadastrado = LocalDateTime.now();
+    private String cadastradoPor;
+    private LocalDateTime alterado;
+    private String alteradoPor;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
