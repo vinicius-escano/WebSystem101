@@ -48,5 +48,9 @@ public class Devolucao extends Venda {
         return false;
     }
 
+    public Optional<Produto> buscaProdutoDaLista(int index){
+        return Optional.of(getListProdutos().get(index));
+    }
+
 
 }

@@ -15,8 +15,8 @@
     function buscarVenda(codigoVenda) {
             window.location.href = '/buscavenda?codigoVenda=' + codigoVenda;
     }
-    function adicionaItem(itemCodigo, quantidade) {
-            window.location.href = window.document.location.origin + '/additemdevolucao?itemCodigo=' + itemCodigo + '&quantidade=' + quantidade;
+    function adicionaItem(quantidade, index) {
+            window.location.href = window.document.location.origin + '/additemdevolucao?quantidade=' + quantidade + '&index=' + index;
     }
 </script>
 
@@ -74,7 +74,7 @@
 
 <div class="container mt-3">
     <div class="boxborder">
-        <form th:object="${devolucao}" th:action="@{/cadastrardevolucao}" method="post">
+        <form th:object="${devolucao}" th:action="@{/confirmardevolucao}" method="post">
             <div>
                 <label class="form-labels">Código da Venda: </label>
                 <input class="form-inputs" id="codigoVenda" name="codigoVenda">
@@ -113,7 +113,7 @@
                                            id="quantidadeDevolver" name="quantidadeDevolver" class="form-inputs quantidadeDevolver"
                                            style="width: 70px"></td>
                                 <td>
-                                    <button type="button" onclick="adicionaItem(document.getElementsByClassName('itemCodigo')[document.getElementById('numList').value].value, document.getElementsByClassName('quantidadeDevolver')[document.getElementById('numList').value].value);" class="btn btn-primary" id="addItemDev" name="addItemDev">+
+                                    <button type="button" th:attr="onclick=|adicionaItem(document.getElementsByClassName('quantidadeDevolver')[${stat.index}].value, ${stat.index})|" class="btn btn-primary" id="addItemDev" name="addItemDev">+
                                     </button>
                                 </td>
                             </tr>
@@ -139,6 +139,7 @@
                     </div>
                 </div>
             </div>
+            <button type="submit" class="btn btn-primary" th:value="${devolucao}">Próxima</button>
         </form>
     </div>
 </div>
