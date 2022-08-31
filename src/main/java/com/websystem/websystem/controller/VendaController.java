@@ -1,20 +1,23 @@
 package com.websystem.websystem.controller;
 
-import com.websystem.websystem.enums.ModoPagamento;
 import com.websystem.websystem.enums.VendaStatus;
 import com.websystem.websystem.model.Produto;
 import com.websystem.websystem.model.Venda;
 import com.websystem.websystem.repository.ProdutoRepository;
 import com.websystem.websystem.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Optional;
 
-@RestController
+@Controller
 public class VendaController {
 
     @Autowired

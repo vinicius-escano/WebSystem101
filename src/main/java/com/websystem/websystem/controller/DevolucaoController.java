@@ -1,23 +1,25 @@
 package com.websystem.websystem.controller;
 
-import com.websystem.websystem.model.Devolucao;
-import com.websystem.websystem.model.Produto;
-import com.websystem.websystem.model.Venda;
-import com.websystem.websystem.service.DevolucaoService;
-import com.websystem.websystem.service.ProdutoService;
-import com.websystem.websystem.service.VendaService;
+import com.websystem.websystem.model.*;
+import com.websystem.websystem.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
 public class DevolucaoController {
+
+    @Autowired
+    private DevolucaoService devolucaoService;
 
     @Autowired
     private VendaService vendaService;
@@ -26,7 +28,10 @@ public class DevolucaoController {
     private ProdutoService produtoService;
 
     @Autowired
-    private DevolucaoService devolucaoService;
+    private ClienteService clienteService;
+
+    @Autowired
+    private BancoService bancoService;
 
     @GetMapping("/devolucao")
     public ModelAndView abrirDevolucao() {
@@ -41,6 +46,7 @@ public class DevolucaoController {
             devolucao.setVendaOrigemCodigo(codigoVenda);
             devolucao.setVenda(opVenda.get());
             devolucao.setListProdutos(produtoService.findAllFromVendas(codigoVenda));
+            devolucao.setCliente(opVenda.get().getCliente());
             httpServletRequest.getSession().setAttribute("devolucao", devolucao);
             return new ModelAndView("devolucao").addObject("devolucao", devolucao);
         }
@@ -54,7 +60,7 @@ public class DevolucaoController {
         if (opProduto.isPresent()) {
             opProduto.get().setQuantidadeDevolver(Integer.valueOf(qtdeDevolver));
             devolucao.getProdutosDevolver().add(opProduto.get());
-            devolucao.getListProdutos().remove(devolucao.getListProdutos().get(Integer.valueOf(indexCodigo)));
+            devolucao.getListProdutos().get(Integer.valueOf(indexCodigo)).setQuantidadeVenda(opProduto.get().getQuantidadeVenda() - Integer.valueOf(qtdeDevolver));
             httpServletRequest.getSession().setAttribute("devolucao", devolucao);
             return new ModelAndView("devolucao").addObject("devolucao", devolucao);
         }
@@ -62,7 +68,15 @@ public class DevolucaoController {
     }
 
     @PostMapping("/confirmardevolucao")
-    public ModelAndView confirmaEstornoValores(@RequestParam("modoDevolucao") String modoDevolucao, HttpServletRequest httpServletRequest){
+    public ModelAndView confirmaEstornoValores(HttpServletRequest httpServletRequest){
+        Devolucao devolucao = (Devolucao) httpServletRequest.getSession().getAttribute("devolucao");
+        devolucaoService.calculaDevolucao(devolucao);
+        List<Banco> listBancos =  bancoService.findAll();
+        return new ModelAndView("confirmacao-devolucao").addObject("devolucao", devolucao).addObject("bancos", listBancos);
+    }
+
+    @PostMapping("/cadastrarDevolucao")
+    public ModelAndView cadastraDevolucao(HttpServletRequest httpServletRequest){
         Devolucao devolucao = (Devolucao) httpServletRequest.getSession().getAttribute("devolucao");
         devolucaoService.calculaDevolucao(devolucao);
         return new ModelAndView("confirmacao-devolucao").addObject("devolucao", devolucao);

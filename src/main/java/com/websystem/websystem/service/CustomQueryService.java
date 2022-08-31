@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CustomQueryService {
@@ -24,5 +25,4 @@ public class CustomQueryService {
         List<ProdutoVendaDTO> listProdutos = (List<ProdutoVendaDTO>) query.getResultList();
         return listProdutos;
     }
-
 }

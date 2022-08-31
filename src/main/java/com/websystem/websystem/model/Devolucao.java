@@ -39,6 +39,9 @@ public class Devolucao extends Venda {
     @Transient
     private List<Produto> produtosDevolver = new ArrayList<>();
 
+    @Transient
+    private Cliente cliente;
+
     public boolean setVenda() {
         Optional<Venda> opVenda = vendaRepository.findById(vendaOrigemCodigo);
         if (opVenda.isPresent()){

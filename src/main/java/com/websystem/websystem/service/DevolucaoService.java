@@ -10,7 +10,8 @@ public class DevolucaoService {
     public void calculaDevolucao(Devolucao devolucao) {
         double valorTotal = 0.0;
         for (Produto p : devolucao.getProdutosDevolver()) {
-            valorTotal += (p.getValor() * p.getQuantidadeDevolver());
+            p.setValorTotalEmDevolucao(p.getValor() * p.getQuantidadeDevolver());
+            valorTotal += (p.getValorTotalEmDevolucao());
         }
         devolucao.setValorDevolucao(valorTotal);
     }

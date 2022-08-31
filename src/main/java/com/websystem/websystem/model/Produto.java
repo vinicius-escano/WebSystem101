@@ -36,5 +36,7 @@ public class Produto {
     private Double valorTotalEmVenda;
     @Transient
     private Integer quantidadeDevolver;
+    @Transient
+    private Double valorTotalEmDevolucao;
 
 }

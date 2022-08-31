@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap-utilities.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Aldrich'>
+    <script src="../js/script.js"></script>
 </head>
 
 <script>
@@ -77,9 +78,9 @@
     <div class="boxborder">
         <form th:object="${devolucao}" th:action="@{/cadastrardevolucao}" method="post">
             <div>
-                <label class="form-labels">Venda Origem: <span th:text="*{vendaOrigemCodigo}"></span></label>
-                <label class="form-labels">Cliente : <span th:text="*{vendaOrigemCodigo}"></span></label><br>
-                <label class="form-labels">Valor Total: <span th:text="*{vendaOrigemCodigo}"></span></label><br>
+                <label class="form-labels">Venda Origem: <span th:text="*{vendaOrigemCodigo}"></span></label><br>
+                <label class="form-labels">Cliente : <span th:text="*{cliente.nome}"></span></label><br>
+                <label class="form-labels">CPF/CNPJ : <span th:text="*{cliente.cpfCnpj}"></span></label><br>
 
                 <h1 style="text-align: center;">Itens a devolver</h1>
                 <table class="table text-center">
@@ -88,23 +89,40 @@
                         <th>Item Cód.</th>
                         <th>Descrição</th>
                         <th>Qtde Devolver</th>
+                        <th>Valor Parcial</th>
                     </tr>
                     <tr th:each="produtoDev, stat : *{produtosDevolver}" id="produtosDevolver">
                         <td th:text="(${stat.index} + 1)"></td>
                         <td th:text="*{produtosDevolver[__${stat.index}__].codigo}" id="itemCodigoDev"
                             name="itemCodigo"></td>
                         <td th:text="*{produtosDevolver[__${stat.index}__].descricao}"></td>
-                        <td th:field="*{produtosDevolver[__${stat.index}__].quantidadeDevolver}"></td>
+                        <td th:text="*{produtosDevolver[__${stat.index}__].quantidadeDevolver}"></td>
+                        <td th:text="*{#numbers.formatCurrency(produtosDevolver[__${stat.index}__].valorTotalEmDevolucao)}"></td>
                     </tr>
                 </table>
-                <label class="form-labels">Valor Devolução: </label>
+                <label class="form-labels">Valor Devolução: <span th:text="*{#numbers.formatCurrency(valorDevolucao)}"></span></label>
                 <br>
                 <div class="mt-3">
-                    <input type="radio" id="modoDevolucao" name="modoDevolucao" class="form-check-input">Crédito em Conta</input>
-                    <input type="radio" id="modoDevolucao" name="modoDevolucao" class="form-check-input">Devolver em Depósito</input>
+                    <input type="radio" id="modoDevolucao" name="modoDevolucao" class="form-check-input" onclick="selecionaModoDevolucao(1);">Crédito em Conta</input>
+                    <input type="radio" id="modoDevolucao" name="modoDevolucao" class="form-check-input" onclick="selecionaModoDevolucao(0);">Devolver em Depósito</input>
+                </div>
+                <div id="dadosContaDeposito" style="display: none;">
+                    <select>
+                        <option th-each="banco: ${bancos}" th:value="${bancos.codigo}" th:text="${bancos.nomeBanco}"></option>
+                    </select>
+                    <label class="form-labels">Agência:</label>
+                    <input class="form-inputs" style="width: 5%"><br>
+                    <label class="form-labels">Conta:</label>
+                    <input class="form-inputs" style="width: 10%">
+                </div>
+                <div id="creditoConta" style="display: none;">
+                    <label class="form-labels">Cliente Código: <span th:text="*{cliente.codigo}"></span></label><br>
+                    <label class="form-labels">Nome : <span th:text="*{cliente.nome}"></span></label><br>
+                    <label class="form-labels">CPF/CNPJ : <span th:text="*{cliente.cpfCnpj}"></span></label><br>
+                    <label class="form-labels">Valor a ser creditado: <span th:text="*{#numbers.formatCurrency(valorDevolucao)}"></span></label>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" th:value="${devolucao}">Próxima</button>
+            <button type="submit" class="btn btn-primary" th:value="${devolucao}">Confirmar</button>
         </form>
     </div>
 </div>
