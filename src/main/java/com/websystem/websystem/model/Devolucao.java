@@ -13,13 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tb_devolucao")
-public class Devolucao extends Venda {
+public class Devolucao{
 
+    @Transient
     @Autowired
     VendaRepository vendaRepository;
 
@@ -27,7 +29,7 @@ public class Devolucao extends Venda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
     private int vendaOrigemCodigo;
-    private double valorDevolucao;
+    private double valorDevolucao = 0.0;
     private LocalDateTime cadastrado = LocalDateTime.now();
     private String cadastradoPor;
     private LocalDateTime alterado;
@@ -42,18 +44,11 @@ public class Devolucao extends Venda {
     @Transient
     private Cliente cliente;
 
-    public boolean setVenda() {
-        Optional<Venda> opVenda = vendaRepository.findById(vendaOrigemCodigo);
-        if (opVenda.isPresent()){
-            venda = opVenda.get();
-            return true;
-        }
-        return false;
-    }
+    @Transient
+    private Banco banco;
 
     public Optional<Produto> buscaProdutoDaLista(int index){
-        return Optional.of(getListProdutos().get(index));
+        return Optional.of(venda.getListProdutos().get(index));
     }
-
 
 }

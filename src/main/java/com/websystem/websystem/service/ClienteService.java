@@ -7,6 +7,8 @@ import com.websystem.websystem.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,9 @@ public class ClienteService{
     @Autowired
     ContatoRepository contatoRepository;
 
+    @PersistenceContext
+    EntityManager entityManager;
+
     public List<Cliente> getAll(){
         return (List<Cliente>) clienteRepository.findAll();
     }
@@ -36,6 +41,8 @@ public class ClienteService{
         return Optional.empty();
     }
 
-
+    public boolean insereCreditoEmConta(Cliente cliente, double valor){
+        return clienteRepository.insereCreditoEmConta(valor, cliente.getCodigo()) > 0 ? true : false;
+    }
 
 }

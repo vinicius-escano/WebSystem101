@@ -23,10 +23,12 @@ public class Cliente {
 
     private String nome;
     private String cpfCnpj;
-    private LocalDateTime cadastrado = LocalDateTime.now();
+    private LocalDateTime cadastrado;
     private String cadastradoPor;
     private LocalDateTime alterado;
     private String alteradoPor;
+
+    private double creditoEmConta;
 
     @OneToMany(mappedBy = "cliente")
     private List<Contatos> listContatos;

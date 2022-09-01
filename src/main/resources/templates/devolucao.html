@@ -101,15 +101,15 @@
                                 <th>Qtde Devolver</th>
                                 <th>Adicionar a Devolucao</th>
                             </tr>
-                            <tr th:each="produto, stat : *{listProdutos}" id="listProdutos">
+                            <tr th:each="produto, stat : *{venda.listProdutos}" id="venda.listProdutos">
                                 <td th:text="(${stat.index} + 1)" th:value="${stat.index}" id="numList"></td>
-                                <td th:text="*{listProdutos[__${stat.index}__].codigo}" id="itemCodigo"
-                                    name="itemCodigo" th:value="*{listProdutos[__${stat.index}__].codigo}" class="itemCodigo"></td>
-                                <td th:text="*{listProdutos[__${stat.index}__].descricao}"></td>
-                                <td th:text="*{listProdutos[__${stat.index}__].quantidadeVenda}"></td>
-                                <td th:text="*{#numbers.formatCurrency(listProdutos[__${stat.index}__].valorTotalEmVenda)}"></td>
-                                <td th:text="*{#numbers.formatCurrency(listProdutos[__${stat.index}__].valor)}"></td>
-                                <td><input th:field="*{listProdutos[__${stat.index}__].quantidadeDevolver}"
+                                <td th:text="*{venda.listProdutos[__${stat.index}__].codigo}" id="itemCodigo"
+                                    name="itemCodigo" th:value="*{venda.listProdutos[__${stat.index}__].codigo}" class="itemCodigo"></td>
+                                <td th:text="*{venda.listProdutos[__${stat.index}__].descricao}"></td>
+                                <td th:text="*{venda.listProdutos[__${stat.index}__].quantidadeVenda}"></td>
+                                <td th:text="*{#numbers.formatCurrency(venda.listProdutos[__${stat.index}__].valorTotalEmVenda)}"></td>
+                                <td th:text="*{#numbers.formatCurrency(venda.listProdutos[__${stat.index}__].valor)}"></td>
+                                <td><input th:field="*{venda.listProdutos[__${stat.index}__].quantidadeDevolver}"
                                            id="quantidadeDevolver" name="quantidadeDevolver" class="form-inputs quantidadeDevolver"
                                            style="width: 70px"></td>
                                 <td>
