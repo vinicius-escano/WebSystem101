@@ -1,6 +1,7 @@
 package com.websystem.websystem.model;
 
 import com.websystem.websystem.enums.CompraDestino;
+import com.websystem.websystem.enums.StatusAprovacao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,8 @@ public class PedidoCompra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
     private CompraDestino destino;
+    private StatusAprovacao status = StatusAprovacao.EM_ABERTO;
+    private String aprovador;
     private String observacao;
     private LocalDateTime cadastrado = LocalDateTime.now();
     private String cadastradoPor;

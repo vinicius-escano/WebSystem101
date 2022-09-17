@@ -4,6 +4,7 @@ import com.websystem.websystem.model.Banco;
 import com.websystem.websystem.model.Cliente;
 import com.websystem.websystem.model.Devolucao;
 import com.websystem.websystem.repository.BancoRepository;
+import com.websystem.websystem.repository.CustomQueryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class BancoService {
     BancoRepository bancoRepository;
 
     @Autowired
-    CustomQueryService customQueryService;
+    CustomQueryRepository customQueryRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -33,14 +34,6 @@ public class BancoService {
 
     public Optional<Banco> findById(int codigo){
         return bancoRepository.findById(codigo);
-    }
-
-    public boolean registraDevolucaoPorDeposito(Cliente cliente, Banco banco, Devolucao devolucao, int agencia, int conta){
-        Query query = entityManager.createNativeQuery("INSERT INTO TB_DEVOLUCOES_DEPOSITO_BANCARIO (CLIENTE_CODIGO, DEVOLUCAO_CODIGO, BANCO_CODIGO, AGENCIA_NUMERO, CONTA_NUMERO) VALUES (" + cliente.getCodigo() + "," + devolucao.getCodigo() + "," + banco.getCodigo() + "," + agencia + "," + conta + ")");
-        if(query.executeUpdate() > 0){
-            return true;
-        }
-        return false;
     }
 
 }

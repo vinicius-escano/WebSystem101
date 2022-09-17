@@ -6,6 +6,8 @@ import com.websystem.websystem.repository.DevolucaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class DevolucaoService {
 
@@ -23,5 +25,9 @@ public class DevolucaoService {
 
     public Devolucao save(Devolucao devolucao){
         return devolucaoRepository.save(devolucao);
+    }
+
+    public Optional<Devolucao> findById(int codigo){
+        return devolucaoRepository.findById(codigo);
     }
 }

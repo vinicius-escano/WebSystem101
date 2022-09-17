@@ -2,6 +2,7 @@ package com.websystem.websystem.service;
 
 import com.websystem.websystem.dto.ProdutoVendaDTO;
 import com.websystem.websystem.model.Produto;
+import com.websystem.websystem.repository.CustomQueryRepository;
 import com.websystem.websystem.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class ProdutoService {
     ProdutoRepository produtoRepository;
 
     @Autowired
-    private CustomQueryService queryService;
+    private CustomQueryRepository queryService;
 
     public List<Produto> findAllByPedidoCompraCodigo(int codigoPedido){
         List<Integer> codigosProdutos = queryService.buscaItensFromProdutosPedidosCompras(codigoPedido);

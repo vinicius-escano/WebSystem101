@@ -66,6 +66,7 @@
     <div class="container mt-3">
         <div class="boxborder text-center">
             <h1>Clientes</h1>
+            <a type="button" class="btn btn-primary" href="/novocliente">Cadastrar Cliente</a>
             <table class="table">
                 <tr>
                     <th>Código</th>
@@ -77,7 +78,8 @@
                     <td th:text="${cliente.codigo}">0001</td>
                     <td th:text="${cliente.nome}">Ademar</td>
                     <td th:text="${cliente.cpfCnpj}">123.456.789-10</td>
-                    <td><a type="button" class="btn btn-primary" th:href="@{'/acessarCliente?'(id = ${cliente.codigo})}">Acessar</a></td>
+                    <td><a type="button" class="btn btn-primary" th:href="@{'/acessarcliente?'(id = ${cliente.codigo})}">Visualizar</a>
+                        <a type="button" class="btn btn-primary" style="margin-left: 15px" th:href="@{'/editarcliente?'(id = ${cliente.codigo})}">Editar</a></td>
                 </tr>
             </table>
         </div>

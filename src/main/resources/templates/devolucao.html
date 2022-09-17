@@ -75,7 +75,7 @@
 <div class="container mt-3">
     <div class="boxborder">
         <form th:object="${devolucao}" th:action="@{/confirmardevolucao}" method="post">
-            <div>
+            <div th:if="${found} == false">
                 <label class="form-labels">Código da Venda: </label>
                 <input class="form-inputs" id="codigoVenda" name="codigoVenda">
                 <button class="btn-primary btn" type="button"

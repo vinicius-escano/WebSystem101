@@ -1,9 +1,11 @@
 package com.websystem.websystem.controller;
 
+import com.websystem.websystem.enums.StatusAprovacao;
 import com.websystem.websystem.model.PedidoCompra;
 import com.websystem.websystem.model.Produto;
 import com.websystem.websystem.repository.PedidoCompraRepository;
 import com.websystem.websystem.repository.ProdutoRepository;
+import com.websystem.websystem.service.PedidoCompraService;
 import com.websystem.websystem.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +29,7 @@ public class CompraController {
     ProdutoRepository produtoRepository;
 
     @Autowired
-    PedidoCompraRepository pedidoCompraRepository;
+    private PedidoCompraService pedidoCompraService;
 
     @Autowired
     private ProdutoService produtoService;
@@ -44,7 +46,7 @@ public class CompraController {
     public ModelAndView novoPedido(HttpServletRequest httpServletRequest) {
         PedidoCompra pedidoCompra = new PedidoCompra(new ArrayList<>());
         httpServletRequest.getSession().setAttribute("pedido-compra", pedidoCompra);
-        return new ModelAndView("pedido-compra").addObject("pedidoCompra", pedidoCompra);
+        return new ModelAndView("pedido-compra").addObject("pedidoCompra", pedidoCompra).addObject("isAprovar", false);
     }
 
     @RequestMapping(value = "/novopedido", params = {"addItem"})
@@ -57,7 +59,7 @@ public class CompraController {
                 pedidoCompra.setListProdutos(new ArrayList<>());
             }
             pedidoCompra.getListProdutos().add(opProduto.get());
-            return new ModelAndView("pedido-compra").addObject("pedidoCompra", pedidoCompra);
+            return new ModelAndView("pedido-compra").addObject("pedidoCompra", pedidoCompra).addObject("isAprovar", false);
         }
         return null;
     }
@@ -66,34 +68,51 @@ public class CompraController {
     public ModelAndView removeProduto(@RequestParam("removeItemNumero") Integer itemNumero, HttpServletRequest httpServletRequest) {
         PedidoCompra pedidoCompra = (PedidoCompra) httpServletRequest.getSession().getAttribute("pedido-compra");
         pedidoCompra.getListProdutos().remove(pedidoCompra.getListProdutos().get(itemNumero));
-        return new ModelAndView("pedido-compra").addObject("pedidoCompra", pedidoCompra);
+        return new ModelAndView("pedido-compra").addObject("pedidoCompra", pedidoCompra).addObject("isAprovar", false);
     }
 
     @PostMapping(value = "/novopedido", consumes = "application/x-www-form-urlencoded")
     public ModelAndView salvaPedido(PedidoCompra pedidoCompra, HttpServletRequest httpServletRequest) {
         PedidoCompra pedidoSession = (PedidoCompra) httpServletRequest.getSession().getAttribute("pedido-compra");
         pedidoCompra.setListProdutos(pedidoSession.getListProdutos());
-        PedidoCompra saved = pedidoCompraRepository.save(pedidoCompra);
+        PedidoCompra saved = pedidoCompraService.save(pedidoCompra);
         for(Produto p: pedidoCompra.getListProdutos()){
-            pedidoCompraRepository.insert(saved.getCodigo(), p.getCodigo(), entityManager);
+            pedidoCompraService.insertReferences(saved.getCodigo(), p.getCodigo());
         }
         return new ModelAndView("comprar-opcoes");
     }
 
     @GetMapping("/visualizarpedidos")
     public ModelAndView visualizarTodos() {
-        List<PedidoCompra> listPedidos =  pedidoCompraRepository.findAll();
+        List<PedidoCompra> listPedidos =  pedidoCompraService.findAll();
         return new ModelAndView("pedidos-compra").addObject("listPedidos", listPedidos);
     }
 
     @RequestMapping(value = "/acessarpedido", params = {"id"})
-    public ModelAndView entradaProduto(@RequestParam("id") Integer id) {
-        Optional<PedidoCompra> opPedidoCompra = pedidoCompraRepository.findById(id);
+    public ModelAndView acessaPedido(@RequestParam("id") Integer id, HttpServletRequest httpServletRequest) {
+        Optional<PedidoCompra> opPedidoCompra = pedidoCompraService.findById(id);
         if(opPedidoCompra.isPresent()){
             opPedidoCompra.get().setListProdutos(produtoService.findAllByPedidoCompraCodigo(id));
-            return new ModelAndView("pedido-compra").addObject("pedidoCompra", opPedidoCompra.get());
+            httpServletRequest.getSession().setAttribute("pedido-compra", opPedidoCompra.get());
+            return new ModelAndView("pedido-compra").addObject("pedidoCompra", opPedidoCompra.get()).addObject("isAprovar", true);
         }
         return null;
+    }
+
+    @RequestMapping(value = "/avaliaPedidoCompra", params = {"isAprovado", "nomeResponsavel"})
+    public ModelAndView aprovaPedido(@RequestParam("isAprovado") Boolean isAprovado,@RequestParam("nomeResponsavel") String aprovador, HttpServletRequest httpServletRequest) {
+        PedidoCompra pedidoSession = (PedidoCompra) httpServletRequest.getSession().getAttribute("pedido-compra");
+        pedidoSession.setAprovador(aprovador);
+        pedidoCompraService.aprovaPedido(pedidoSession, true);
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping(value = "", params = {"reprovar"})
+    public ModelAndView reprovaPedido(@RequestParam("nomeResponsavel") String aprovador, HttpServletRequest httpServletRequest) {
+        PedidoCompra pedidoSession = (PedidoCompra) httpServletRequest.getSession().getAttribute("pedido-compra");
+        pedidoSession.setAprovador(aprovador);
+        pedidoCompraService.aprovaPedido(pedidoSession, false);
+        return new ModelAndView("home");
     }
 
     @GetMapping("/pedidosCompra")

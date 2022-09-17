@@ -4,6 +4,7 @@ import com.websystem.websystem.model.Banco;
 import com.websystem.websystem.model.Devolucao;
 import com.websystem.websystem.model.Produto;
 import com.websystem.websystem.model.Venda;
+import com.websystem.websystem.repository.CustomQueryRepository;
 import com.websystem.websystem.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,9 +36,12 @@ public class DevolucaoController {
     @Autowired
     private BancoService bancoService;
 
+    @Autowired
+    private CustomQueryRepository customQueryRepository;
+
     @GetMapping("/devolucao")
     public ModelAndView abrirDevolucao() {
-        return new ModelAndView("devolucao").addObject("devolucao", new Devolucao());
+        return new ModelAndView("devolucao").addObject("devolucao", new Devolucao()).addObject("found", false);
     }
 
     @GetMapping("/buscavenda")
@@ -50,9 +54,9 @@ public class DevolucaoController {
             devolucao.getVenda().setListProdutos(produtoService.findAllFromVendas(codigoVenda));
             devolucao.setCliente(opVenda.get().getCliente());
             httpServletRequest.getSession().setAttribute("devolucao", devolucao);
-            return new ModelAndView("devolucao").addObject("devolucao", devolucao);
+            return new ModelAndView("devolucao").addObject("devolucao", devolucao).addObject("found", true);
         }
-        return new ModelAndView("devolucao").addObject("devolucao", new Devolucao());
+        return new ModelAndView("devolucao").addObject("devolucao", new Devolucao()).addObject("found",false);
     }
 
     @GetMapping("/additemdevolucao")
@@ -86,7 +90,7 @@ public class DevolucaoController {
         devolucao = devolucaoService.save(devolucao);
         Optional<Banco> opBanco = bancoService.findById(codigoBanco);
         if (opBanco.isPresent()) {
-            if (bancoService.registraDevolucaoPorDeposito(devolucao.getCliente(), opBanco.get(), devolucao, agencia, numero)) {
+            if (customQueryRepository.registraDevolucaoPorDeposito(devolucao.getCliente(), opBanco.get(), devolucao, agencia, numero)) {
                 return new ModelAndView("home");
             }
         }

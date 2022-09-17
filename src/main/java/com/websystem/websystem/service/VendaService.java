@@ -38,17 +38,9 @@ public class VendaService {
         vendaRepository.alteraStatusVenda(venda.getModoPagamento(), venda.getVendaStatus(), venda.getCodigo());
     }
 
-    @Transactional
-    public void salvarItensReferenciaVenda(int codigoVenda, List<Produto> produtos){
-        for(Produto p: produtos) {
-            entityManager.createNativeQuery("INSERT INTO TB_PRODUTOS_VENDAS (VENDA_CODIGO,PRODUTO_CODIGO,PRODUTO_QUANTIDADE,PRODUTO_VALOR_TOTAL) VALUES(?,?,?,?)")
-                    .setParameter(1, codigoVenda)
-                    .setParameter(2, p.getCodigo())
-                    .setParameter(3, p.getQuantidadeVenda())
-                    .setParameter(4, p.getValorTotalEmVenda())
-                    .executeUpdate();
-        }
-    }
 
+    public List<Venda> buscaPorPeriodo(String dataInicio, String dataFim){
+        return vendaRepository.findByPeriodo(dataInicio, dataFim);
+    }
 
 }

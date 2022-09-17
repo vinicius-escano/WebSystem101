@@ -3,6 +3,7 @@ package com.websystem.websystem.controller;
 import com.websystem.websystem.enums.VendaStatus;
 import com.websystem.websystem.model.Produto;
 import com.websystem.websystem.model.Venda;
+import com.websystem.websystem.repository.CustomQueryRepository;
 import com.websystem.websystem.repository.ProdutoRepository;
 import com.websystem.websystem.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class VendaController {
 
     @Autowired
     private VendaService vendaService;
+
+    @Autowired
+    private CustomQueryRepository customQueryRepository;
 
     @GetMapping("/vender")
     public ModelAndView vender(HttpServletRequest httpServletRequest) {
@@ -58,7 +62,7 @@ public class VendaController {
     public ModelAndView adicionarItem(HttpServletRequest httpServletRequest){
         Venda venda = (Venda) httpServletRequest.getSession().getAttribute("venda");
         Venda savedVenda = vendaService.salvarVenda(venda);
-        vendaService.salvarItensReferenciaVenda(savedVenda.getCodigo(), venda.getListProdutos());
+        customQueryRepository.salvarItensReferenciaVenda(savedVenda.getCodigo(), venda.getListProdutos());
         return new ModelAndView("modo-pagamento").addObject("venda", savedVenda);
     }
 

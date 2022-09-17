@@ -16,4 +16,7 @@ public class HomeController {
         return new ModelAndView("home");
     }
 
+    @GetMapping("/start")
+    public ModelAndView start() {return new ModelAndView("");}
+
 }

@@ -22,16 +22,24 @@ public class ClienteController {
         return new ModelAndView("clientes").addObject("clientes", clienteService.getAll());
     }
 
-    @GetMapping("/cadastrarcliente")
+    @GetMapping("/novocliente")
     public ModelAndView cadastrarCliente(){
-        return new ModelAndView("ficha-cliente").addObject("isNovo", true);
+        return new ModelAndView("ficha-cliente").addObject("isNovo", true).addObject("cliente", new Cliente());
     }
 
-    @RequestMapping(value = "/acessarCliente", params = {"id"})
+    @RequestMapping(value = "/acessarcliente", params = {"id"})
     public ModelAndView acessarCadastroCliente(@RequestParam("id") String id){
         Optional<Cliente> opCliente = clienteService.findById(Integer.valueOf(id));
         ModelAndView modelAndView = new ModelAndView("ficha-cliente");
-        modelAndView.addObject("cliente", opCliente.get());
+        modelAndView.addObject("cliente", opCliente.get()).addObject("editar", false);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/editarcliente", params = {"id"})
+    public ModelAndView editarCadastroCliente(@RequestParam("id") String id){
+        Optional<Cliente> opCliente = clienteService.findById(Integer.valueOf(id));
+        ModelAndView modelAndView = new ModelAndView("ficha-cliente");
+        modelAndView.addObject("cliente", opCliente.get()).addObject("editar", true);
         return modelAndView;
     }
 }
