@@ -39,6 +39,10 @@ public class PedidoCompraService {
         return pedidoCompraRepository.findAll();
     }
 
+    public List<PedidoCompra> findAllEmAberto(){
+        return pedidoCompraRepository.findAllEmAberto(StatusAprovacao.EM_ABERTO);
+    }
+
     public void aprovaPedido(PedidoCompra pedidoCompra, boolean isAprovado){
         if(isAprovado){
             pedidoCompra.setStatus(StatusAprovacao.APROVADO);

@@ -1,11 +1,15 @@
 package com.websystem.websystem.repository;
 
+import com.websystem.websystem.enums.StatusAprovacao;
 import com.websystem.websystem.model.PedidoCompra;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Status;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface PedidoCompraRepository extends JpaRepository<PedidoCompra, Integer> {
@@ -17,5 +21,8 @@ public interface PedidoCompraRepository extends JpaRepository<PedidoCompra, Inte
                 .setParameter(2, produtoCodigo)
                 .executeUpdate();
     }
+
+    @Query("SELECT p FROM PedidoCompra p WHERE p.status = ?1")
+    List<PedidoCompra> findAllEmAberto(StatusAprovacao statusAprovacao);
 
 }

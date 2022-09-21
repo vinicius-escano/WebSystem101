@@ -16,6 +16,9 @@
             location.href = '/adicionarproduto?codigo=' + codigo + "&quantidade=" + quantidade;
         }
 
+
+
+
 </script>
 
 <body>
@@ -72,11 +75,12 @@
 
 <div class="container mt-3">
     <div class="boxborder form-row">
-        <form th:object="${pedidoCompra}" action="/novopedido" th:action="@{/novopedido}" method="POST">
-            <div style="display: none;">
-                <input th:field="*{codigo}" name="codigo" id="codigo">
-            </div>
-            <div th:if="${isAprovar} == false">
+        <div th:if="${isAprovar} == false">
+            <form th:object="${pedidoCompra}" action="/novopedido" th:action="@{/novopedido}" method="POST">
+                <div style="display: none;">
+                    <input th:field="*{codigo}" name="codigo" id="codigo">
+                </div>
+
                 <div>
                     <label class="form-labels">Destino</label>
                     <select name="destino" id="destino">
@@ -122,8 +126,11 @@
                               class="form-inputs"></textarea>
                 </div>
                 <button class="btn btn-primary" type="submit">Salvar</button>
-            </div>
-            <div th:if="${isAprovar} == true">
+
+            </form>
+        </div>
+        <div th:if="${isAprovar} == true">
+            <form th:object="${pedidoCompra}" action="/revisapedido" th:action="@{/revisapedido}" method="POST">
                 <div>
                     <label class="form-labels">Destino</label>
                     <p th:text="*{destino}"></p>
@@ -152,10 +159,10 @@
                 </div>
                 <label>Revisado Por:</label>
                 <input class="form-inputs" th:field="*{aprovador}" name="nomeResponsavel" id="nomeResponsavel">
-                <a class="btn btn-primary" type="button" id="aprovar" th:href="@{'/avaliaPedidoCompra?isAprovado=true&' (nomeAprovador = *{aprovador})">Aprovar</a>
-                <a class="btn btn-primary" type="button" id="reprovar" th:href="@{'/avaliaPedidoCompra?isAprovado=false&' (nomeAprovador = *{aprovador})">Reprovar</a>
-            </div>
-        </form>
+                <button class="btn btn-primary" type="submit" id="aprovar" name="isAprovado" value="true">Aprovar</button>
+                <button class="btn btn-primary" type="submit" id="reprovar" name="isAprovado" value="false">Reprovar</button>
+            </form>
+        </div>
     </div>
 </div>
 </body>

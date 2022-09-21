@@ -76,7 +76,7 @@ public class CompraController {
         PedidoCompra pedidoSession = (PedidoCompra) httpServletRequest.getSession().getAttribute("pedido-compra");
         pedidoCompra.setListProdutos(pedidoSession.getListProdutos());
         PedidoCompra saved = pedidoCompraService.save(pedidoCompra);
-        for(Produto p: pedidoCompra.getListProdutos()){
+        for (Produto p : pedidoCompra.getListProdutos()) {
             pedidoCompraService.insertReferences(saved.getCodigo(), p.getCodigo());
         }
         return new ModelAndView("comprar-opcoes");
@@ -84,14 +84,14 @@ public class CompraController {
 
     @GetMapping("/visualizarpedidos")
     public ModelAndView visualizarTodos() {
-        List<PedidoCompra> listPedidos =  pedidoCompraService.findAll();
+        List<PedidoCompra> listPedidos = pedidoCompraService.findAllEmAberto();
         return new ModelAndView("pedidos-compra").addObject("listPedidos", listPedidos);
     }
 
     @RequestMapping(value = "/acessarpedido", params = {"id"})
     public ModelAndView acessaPedido(@RequestParam("id") Integer id, HttpServletRequest httpServletRequest) {
         Optional<PedidoCompra> opPedidoCompra = pedidoCompraService.findById(id);
-        if(opPedidoCompra.isPresent()){
+        if (opPedidoCompra.isPresent()) {
             opPedidoCompra.get().setListProdutos(produtoService.findAllByPedidoCompraCodigo(id));
             httpServletRequest.getSession().setAttribute("pedido-compra", opPedidoCompra.get());
             return new ModelAndView("pedido-compra").addObject("pedidoCompra", opPedidoCompra.get()).addObject("isAprovar", true);
@@ -99,19 +99,15 @@ public class CompraController {
         return null;
     }
 
-    @RequestMapping(value = "/avaliaPedidoCompra", params = {"isAprovado", "nomeResponsavel"})
-    public ModelAndView aprovaPedido(@RequestParam("isAprovado") Boolean isAprovado,@RequestParam("nomeResponsavel") String aprovador, HttpServletRequest httpServletRequest) {
+    @RequestMapping(value = "/revisapedido", params = {"isAprovado", "aprovador"})
+    public ModelAndView avaliaPedido(@RequestParam("isAprovado") Boolean isAprovado, @RequestParam("aprovador") String aprovador, HttpServletRequest httpServletRequest) {
         PedidoCompra pedidoSession = (PedidoCompra) httpServletRequest.getSession().getAttribute("pedido-compra");
         pedidoSession.setAprovador(aprovador);
-        pedidoCompraService.aprovaPedido(pedidoSession, true);
-        return new ModelAndView("home");
-    }
-
-    @RequestMapping(value = "", params = {"reprovar"})
-    public ModelAndView reprovaPedido(@RequestParam("nomeResponsavel") String aprovador, HttpServletRequest httpServletRequest) {
-        PedidoCompra pedidoSession = (PedidoCompra) httpServletRequest.getSession().getAttribute("pedido-compra");
-        pedidoSession.setAprovador(aprovador);
-        pedidoCompraService.aprovaPedido(pedidoSession, false);
+        if (isAprovado) {
+            pedidoCompraService.aprovaPedido(pedidoSession, true);
+        } else {
+            pedidoCompraService.aprovaPedido(pedidoSession, false);
+        }
         return new ModelAndView("home");
     }
 
